@@ -1,0 +1,136 @@
+#!/bin/bash
+
+IP=$1
+DOMAIN=$2
+NAMESERVER=$3
+
+#if [[ -z "$IP" || -z "$DOMAIN" || -z "$NAMESERVER" ]]; then
+#  echo "Usage: $0 <IP address> <Domain> or <nameserver>"
+# exit 1
+#fi
+
+A_record() {
+  local domain NS
+  read -p "Please enter domain...  " domain
+  read -p "Enter your custom (optional, press Enter to skip):  " NS
+
+  if [[ -z "$NS" ]]; then
+    dig "$domain" A +short
+  else
+    dig "$domain" @"$NS" A +short
+  fi
+}
+
+MX_record() {
+  local domain NS
+  read -p "Please enter domain...  " domain
+  read -p "Enter your custom (optional, press Enter to skip):  " NS
+
+  if [[ -z "$NS" ]]; then
+    dig "$domain" MX
+  else
+    dig "$domain" @"$NS" MX
+  fi
+}
+
+PTR_record() {
+  local IP NS
+  read -p "Enter enter IP...  " IP
+  read -p "Enter your custom (optional, press Enter to skip):  " NS
+
+  if [[ -z "$NS" ]]; then
+    dig -x $IP
+  else
+    dig -x "$IP" @"$NS"
+  fi
+}
+
+TXT_record() {
+  local domain NS
+  read -p "Enter enter domain...  " domain
+  read -p "Enter your custom (optional, press Enter to skip):  " NS
+
+  if [[ -z "$NS" ]]; then
+    dig TXT "$domain"
+  else
+    dig TXT "$domain" @"$NS"
+  fi
+}
+
+SOA() {
+  local domain NS
+  read -p "Enter enter domain...  " domain
+  read -p "Enter your custom (optional, press Enter to skip):  " NS
+
+  if [[ -z "$NS" ]]; then
+    dig SOA "$domain"
+  else
+    dig SOA "$domain" @"$NS"
+  fi
+}
+
+NS_record() {
+  local domain NS
+  read -p "Enter enter domain...  " domain
+  read -p "Enter your custom (optional, press Enter to skip):  " NS
+
+  if [[ -z "$NS" ]]; then
+    dig NS "$domain"
+  else
+    dig NS "$domain" @"$NS"
+  fi
+}
+
+CAA() {
+  local domain NS
+  read -p "Enter enter domain...  " domain
+  read -p "Enter your custom (optional, press Enter to skip):  " NS
+
+  if [[ -z "$NS" ]]; then
+    dig CAA "$domain"
+  else
+    dig CAA "$domain" @"$NS"
+  fi
+}
+
+# Ask for record type
+echo "Select DNS record type:"
+echo "1) A (IPv4 Address)"
+echo "2) MX (Mail Exchange)"
+echo "3) TXT (Text Records)"
+echo "4) NS (Name Servers)"
+echo "5) SOA (Start of Authority)"
+echo "6) PTR (Reverse DNS)"
+echo "7) CAA (Certificate Authority)"
+read -p "Enter choice (1-7): " choice
+
+case $choice in
+1)
+  RECORD_TYPE="A"
+  A_record
+  ;;
+2)
+  RECORD_TYPE="MX"
+  MX_record
+  ;;
+3)
+  RECORD_TYPE="TXT"
+  TXT_record
+  ;;
+4)
+  RECORD_TYPE="NS"
+  NS_record
+  ;;
+5)
+  RECORD_TYPE="SOA"
+  SOA
+  ;;
+6)
+  RECORD_TYPE="PTR"
+  PTR_record
+  ;;
+7)
+  RECORD_TYPE="CAA"
+  CAA
+  ;;
+esac

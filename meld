@@ -1,0 +1,16 @@
+ARGS=()
+
+for arg in "$@"; do
+  # If absolute path, remap to /work
+  if [[ "$arg" = /* ]]; then
+    ARGS+=("/work$arg")
+  else
+    ARGS+=("$arg")
+  fi
+done
+
+exec podman run --rm -it \
+  -e DISPLAY="$DISPLAY" \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v /:/work \
+  prod-me meld "${ARGS[@]}"
