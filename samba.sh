@@ -88,7 +88,7 @@ EOF
     #echo "Samba has been installed and configured "
     cat <<EOF
 
-    Samba share created successfully 🎉
+    Samba share created successfully 
 
     Mount command:
     mount -t cifs //$IP/$SHARE_NAME YOUR_MOUNT_POINT  -o credentials=/root/.cifs-credentials,vers=3.1.1,sec=ntlmssp,file_mode=0777,dir_mode=0777,nobrl
