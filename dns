@@ -1,8 +1,8 @@
 #!/bin/bash
 
-IP=$1
-DOMAIN=$2
-NAMESERVER=$3
+#IP=$1
+#DOMAIN=$2
+#NAMESERVER=$3
 
 #if [[ -z "$IP" || -z "$DOMAIN" || -z "$NAMESERVER" ]]; then
 #  echo "Usage: $0 <IP address> <Domain> or <nameserver>"
